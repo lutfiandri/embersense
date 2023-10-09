@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Footer from '../feature/Footer';
 import Header from '../feature/Header';
-import Sidebar from '../feature/Sidebar';
+import Sidebar from '../feature/sidebar/Sidebar';
 
 function DefaultLayout({ children, title = 'Embersense' }) {
   return (
