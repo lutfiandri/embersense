@@ -1,13 +1,11 @@
-import {
-  CircleMarker,
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-} from 'react-leaflet';
+import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Drawer } from 'antd';
+import { useState } from 'react';
 
 export default function Map() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+
   return (
     <div className="">
       <MapContainer
@@ -29,6 +27,7 @@ export default function Map() {
           eventHandlers={{
             mouseover: (event) => event.target.openPopup(),
             mouseout: (event) => event.target.closePopup(),
+            click: () => setIsDrawerOpen(true),
           }}
         >
           <Popup autoClose closeButton={true}>
@@ -36,6 +35,13 @@ export default function Map() {
           </Popup>
         </CircleMarker>
       </MapContainer>
+
+      <Drawer
+        title="device id"
+        placement="right"
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      ></Drawer>
     </div>
   );
 }
