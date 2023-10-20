@@ -1,5 +1,14 @@
 import DefaultLayout from '@/components/layout/DefaultLayout';
+import dynamic from 'next/dynamic';
 
-export default function Home() {
-  return <DefaultLayout title="Embersense">main</DefaultLayout>;
+const Map = dynamic(() => import('@/components/feature/map/map'), {
+  ssr: false,
+});
+
+export default function MapPage() {
+  return (
+    <DefaultLayout>
+      <Map></Map>
+    </DefaultLayout>
+  );
 }
