@@ -4,7 +4,7 @@ import { Drawer } from 'antd';
 import { useState } from 'react';
 
 export default function Map() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
     <div className="">
