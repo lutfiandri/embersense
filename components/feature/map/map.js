@@ -1,13 +1,13 @@
 import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Drawer } from 'antd';
+import { Button, Drawer } from 'antd';
 import { useState } from 'react';
 
 export default function Map() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <div className="">
+    <div className="relative isolate">
       <MapContainer
         center={[51.505, -0.09]}
         zoom={13}

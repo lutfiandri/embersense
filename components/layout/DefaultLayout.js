@@ -13,7 +13,7 @@ function DefaultLayout({ children, title = 'Embersense' }) {
         <Sidebar></Sidebar>
         <div className="flex flex-col w-full">
           <Header></Header>
-          <main className="flex-1 p-4">{children}</main>
+          <main className="flex-1 p-4 relative">{children}</main>
           <Footer />
         </div>
       </div>
