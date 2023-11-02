@@ -4,6 +4,7 @@ import {
   TbHistory,
   TbHome,
   TbLayoutDashboard,
+  TbUserQuestion,
 } from 'react-icons/tb';
 
 const MENUS = [
@@ -18,22 +19,17 @@ const MENUS = [
     icon: <TbLayoutDashboard className="w-8 h-8" />,
   },
   {
-    path: '/',
-    title: 'Riwayat',
-    icon: <TbHistory className="w-8 h-8" />,
-  },
-  {
-    path: '/',
-    title: 'Perangkat Sensor',
-    icon: <TbDeviceCameraPhone className="w-8 h-8" />,
+    path: '/about',
+    title: 'About',
+    icon: <TbUserQuestion className="w-8 h-8" />,
   },
 ];
 
 function Sidebar() {
   return (
     <div>
-      <div className="w-[300px]"></div>
-      <div className="w-[300px] h-[100vh] fixed bg-gray-700 text-white">
+      <div className="w-[200px]"></div>
+      <div className="w-[200px] h-[100vh] fixed bg-slate-700 text-white">
         <div className="flex flex-col p-4 gap-1">
           <div>embersense</div>
           {MENUS.map((menu) => (
