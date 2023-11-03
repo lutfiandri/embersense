@@ -1,8 +1,14 @@
 import { insertSensor } from '@/services/sensor';
 import { Button, Form, Input, InputNumber, Modal, notification } from 'antd';
+import { useEffect } from 'react';
 
-export default function AddSensorModal({ isOpen, onCancel, form }) {
+export default function AddSensorModal({ isOpen, onCancel, form, lat, long }) {
   const [api, contextHolder] = notification.useNotification();
+
+  useEffect(() => {
+    form.setFieldValue('latitude', lat);
+    form.setFieldValue('longitude', long);
+  }, [form, lat, long]);
 
   const submitHandler = async () => {
     try {
@@ -31,7 +37,7 @@ export default function AddSensorModal({ isOpen, onCancel, form }) {
 
   return (
     <Modal
-      title="Mo"
+      title="Tambah Sensor"
       open={isOpen}
       onCancel={onCancel}
       cancelText="Batalkan"
@@ -64,7 +70,11 @@ export default function AddSensorModal({ isOpen, onCancel, form }) {
           label="Latitude"
           rules={[{ required: true, message: 'Latitude harus diisi' }]}
         >
-          <InputNumber placeholder="Masukkan latitude" className="w-full" />
+          <InputNumber
+            placeholder="Masukkan latitude"
+            className="w-full"
+            // defaultValue={lat}
+          />
         </Form.Item>
 
         <Form.Item
@@ -72,7 +82,11 @@ export default function AddSensorModal({ isOpen, onCancel, form }) {
           label="Longitude"
           rules={[{ required: true, message: 'Longitude harus diisi' }]}
         >
-          <InputNumber placeholder="Masukkan longitude" className="w-full" />
+          <InputNumber
+            placeholder="Masukkan longitude"
+            className="w-full"
+            // defaultValue={long}
+          />
         </Form.Item>
 
         <Form.Item>
