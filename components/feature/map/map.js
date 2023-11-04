@@ -26,6 +26,8 @@ export default function Map() {
   const [cursorLat, setCursorLat] = useState(0);
   const [cursorLong, setCursorLong] = useState(0);
 
+  const [selectedSensor, setSelectedSensor] = useState();
+
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(new Date());
@@ -100,7 +102,10 @@ export default function Map() {
             eventHandlers={{
               mouseover: (event) => event.target.openPopup(),
               mouseout: (event) => event.target.closePopup(),
-              click: () => setIsDrawerOpen(true),
+              click: () => {
+                setIsDrawerOpen(true);
+                setSelectedSensor(sensor);
+              },
             }}
           >
             <Popup autoClose closeButton={true}>
@@ -149,11 +154,33 @@ export default function Map() {
       />
 
       <Drawer
-        title="device id"
+        title={selectedSensor?.sensorName}
         placement="right"
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-      ></Drawer>
+      >
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col">
+            <div className="text-sm text-gray-600">ID Sensor</div>
+            <div>{selectedSensor?.sensorId}</div>
+          </div>
+          <div className="flex flex-col">
+            <div className="text-sm text-gray-600">Nama Sensor</div>
+            <div>{selectedSensor?.sensorName}</div>
+          </div>
+          <div className="flex flex-col">
+            <div className="text-sm text-gray-600">Lokasi</div>
+            <div>
+              {selectedSensor?.latitude?.toFixed(10)},{' '}
+              {selectedSensor?.longitude?.toFixed(10)}
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <div className="text-sm text-gray-600">Waktu Ditambahkan</div>
+            <div>{formatDateSeconds(selectedSensor?.createdAt?.seconds)}</div>
+          </div>
+        </div>
+      </Drawer>
     </div>
   );
 }
@@ -178,3 +205,18 @@ function MapEvent({
   });
   return <></>;
 }
+
+const formatDateSeconds = (seconds) => {
+  const date = new Date(seconds * 1000);
+  const options = {
+    year: 'numeric',
+    month: 'long', // 'long' displays the full month name
+    day: 'numeric',
+    hour: '2-digit', // Display the hour in 2-digit format (e.g., 09)
+    minute: '2-digit', // Display the minute in 2-digit format (e.g., 05)
+  };
+
+  const formatter = new Intl.DateTimeFormat('id-ID', options);
+  const formattedDate = formatter.format(date);
+  return formattedDate;
+};
