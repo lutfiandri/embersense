@@ -11,10 +11,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { collection, doc, onSnapshot, query } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import AddSensorModal from '../sensor/AddSensorModal';
+import { TbAdjustmentsDollar } from 'react-icons/tb';
 
 export default function Map() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [form] = Form.useForm();
+
+  const [now, setNow] = useState();
 
   const [isWantToCreate, setIsWantToCreate] = useState(false);
 
@@ -22,6 +25,13 @@ export default function Map() {
   const [sensors, setSensors] = useState([]);
   const [cursorLat, setCursorLat] = useState(0);
   const [cursorLong, setCursorLong] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    });
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const q = query(collection(db, 'sensors'));
@@ -36,7 +46,28 @@ export default function Map() {
     return () => unsubscribe();
   }, []);
 
-  const onMouseMove = useCallback((event) => console.log(event.latlng), []);
+  useEffect(() => {
+    console.log(sensors);
+  }, [sensors]);
+
+  const getColor = useCallback(
+    (sensor) => {
+      if (!sensor.lastPacketCount) {
+        // belum pernah aktif
+        return 'green';
+      }
+      const nowSeconds = now.getTime() / 1000;
+      const updatedAtSeconds = sensor.updatedAt.seconds;
+      if (nowSeconds - updatedAtSeconds < 60) {
+        // sedang aktif, sampai 60 detik
+        return 'yellow';
+      }
+
+      // udah pernah aktif, udah mati juga
+      return 'blue';
+    },
+    [now]
+  );
 
   const center = [-7.76535863145401, 110.37231832786686]; // sglc
   return (
@@ -60,17 +91,16 @@ export default function Map() {
         />
         {sensors.map((sensor) => (
           <CircleMarker
-            key={sensor.sensorId}
-            center={[sensor.latitude, sensor.longitude]}
+            key={sensor.sensorId + getColor(sensor)}
+            center={[sensor?.latitude || 0, sensor?.longitude || 0]}
             radius={10}
-            color="red"
-            fillColor="red"
+            color={getColor(sensor)}
+            fillColor={getColor(sensor)}
             fillOpacity={0.7}
             eventHandlers={{
               mouseover: (event) => event.target.openPopup(),
               mouseout: (event) => event.target.closePopup(),
               click: () => setIsDrawerOpen(true),
-              mousemove: onMouseMove,
             }}
           >
             <Popup autoClose closeButton={true}>
@@ -137,8 +167,8 @@ function MapEvent({
 }) {
   useMapEvents({
     mousemove: (e) => {
-      setCursorLat(e.latlng.lat);
-      setCursorLong(e.latlng.lng);
+      setCursorLat(e?.latlng?.lat);
+      setCursorLong(e?.latlng?.lng);
     },
     click: (e) => {
       if (isWantToCreate) {
