@@ -10,17 +10,17 @@ import {
 const MENUS = [
   {
     path: '/',
-    title: 'Home',
+    title: 'Pemetaan',
     icon: <TbHome className="w-8 h-8" />,
   },
   {
-    path: '/',
+    path: '/dashboard',
     title: 'Dashboard',
     icon: <TbLayoutDashboard className="w-8 h-8" />,
   },
   {
     path: '/about',
-    title: 'About',
+    title: 'Tentang Kami',
     icon: <TbUserQuestion className="w-8 h-8" />,
   },
 ];
