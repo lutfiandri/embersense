@@ -31,12 +31,12 @@ function Sidebar() {
     <div>
       <div className="w-[220px]"></div>
       <div className="w-[220px] h-[100vh] fixed bg-[#CA3433] text-white">
-        <div className="flex flex-col px-4 py-8 gap-1">
-          <div className="flex flex-col items-center justify-center gap-2">
+        <div className="flex flex-col px-4 py-8">
+          <div className="flex flex-col items-center justify-center gap-1">
             <img
               src="/embersense.svg"
               alt="Embersense Logo"
-              className="w-20 h-20"
+              className="w-24 h-24"
             />
             <div className="font-semibold">Embersense</div>
           </div>
