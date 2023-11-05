@@ -2,9 +2,14 @@ import { insertSensor } from '@/services/sensor';
 import { Button, Form, Input, InputNumber, Modal, notification } from 'antd';
 import { useEffect } from 'react';
 
-export default function AddSensorModal({ isOpen, onCancel, form, lat, long }) {
-  const [api, contextHolder] = notification.useNotification();
-
+export default function AddSensorModal({
+  isOpen,
+  onCancel,
+  form,
+  lat,
+  long,
+  notificationApi,
+}) {
   useEffect(() => {
     form.setFieldValue('latitude', lat);
     form.setFieldValue('longitude', long);
@@ -15,7 +20,7 @@ export default function AddSensorModal({ isOpen, onCancel, form, lat, long }) {
       const data = form.getFieldsValue();
       console.log(data);
       await insertSensor(data);
-      api.success({
+      notificationApi.success({
         message: 'Berhasil',
         description: `Sensor ${data.sensorName} berhasil ditambahkan`,
       });
@@ -28,7 +33,7 @@ export default function AddSensorModal({ isOpen, onCancel, form, lat, long }) {
       onCancel();
     } catch (error) {
       console.error(error);
-      api.error({
+      notificationApi.error({
         message: 'Gagal menambahakan sensor',
         description: error.message,
       });
@@ -44,7 +49,6 @@ export default function AddSensorModal({ isOpen, onCancel, form, lat, long }) {
       maskClosable={false}
       footer={null}
     >
-      {contextHolder}
       <Form form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="sensorId"

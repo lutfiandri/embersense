@@ -6,14 +6,18 @@ import {
   useMapEvents,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Button, Drawer, Form } from 'antd';
+import { Button, Drawer, Form, Popconfirm, notification } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { collection, doc, onSnapshot, query } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import AddSensorModal from '../sensor/AddSensorModal';
 import { TbAdjustmentsDollar } from 'react-icons/tb';
+import { deleteSensor } from '@/services/sensor';
 
 export default function Map() {
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification();
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -74,6 +78,8 @@ export default function Map() {
   const center = [-7.76535863145401, 110.37231832786686]; // sglc
   return (
     <div className="relative isolate">
+      {notificationContextHolder}
+
       <MapContainer
         center={center}
         zoom={13}
@@ -151,6 +157,7 @@ export default function Map() {
         onCancel={() => setIsCreateModalOpen(false)}
         lat={cursorLat}
         long={cursorLong}
+        notificationApi={notificationApi}
       />
 
       <Drawer
@@ -159,26 +166,53 @@ export default function Map() {
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
       >
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col">
-            <div className="text-sm text-gray-600">ID Sensor</div>
-            <div>{selectedSensor?.sensorId}</div>
-          </div>
-          <div className="flex flex-col">
-            <div className="text-sm text-gray-600">Nama Sensor</div>
-            <div>{selectedSensor?.sensorName}</div>
-          </div>
-          <div className="flex flex-col">
-            <div className="text-sm text-gray-600">Lokasi</div>
-            <div>
-              {selectedSensor?.latitude?.toFixed(10)},{' '}
-              {selectedSensor?.longitude?.toFixed(10)}
+        <div className="flex flex-col justify-between h-full">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
+              <div className="text-sm text-gray-600">ID Sensor</div>
+              <div>{selectedSensor?.sensorId}</div>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-sm text-gray-600">Nama Sensor</div>
+              <div>{selectedSensor?.sensorName}</div>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-sm text-gray-600">Lokasi</div>
+              <div>
+                {selectedSensor?.latitude?.toFixed(10)},{' '}
+                {selectedSensor?.longitude?.toFixed(10)}
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-sm text-gray-600">Waktu Ditambahkan</div>
+              <div>{formatDateSeconds(selectedSensor?.createdAt?.seconds)}</div>
             </div>
           </div>
-          <div className="flex flex-col">
-            <div className="text-sm text-gray-600">Waktu Ditambahkan</div>
-            <div>{formatDateSeconds(selectedSensor?.createdAt?.seconds)}</div>
-          </div>
+          <Popconfirm
+            title="Hapus Sensor"
+            description={`Yakin ingin menghapus ${selectedSensor?.sensorId} (${selectedSensor?.sensorName})?`}
+            okText="Ya, hapus"
+            cancelText="Tidak, batal hapus"
+            placement="topRight"
+            onConfirm={async () => {
+              try {
+                await deleteSensor(selectedSensor?.sensorId);
+                notificationApi.success({
+                  message: 'Berhasil',
+                  description: `Sensor ${selectedSensor?.sensorName} berhasil dihapus`,
+                });
+              } catch (error) {
+                notificationApi.error({
+                  message: 'Gagal menghapus sensor',
+                  description: error.message,
+                });
+              }
+            }}
+          >
+            <Button type="primary" danger>
+              Hapus Sensor
+            </Button>
+          </Popconfirm>
         </div>
       </Drawer>
     </div>
@@ -205,9 +239,9 @@ function MapEvent({
   });
   return <></>;
 }
-
+6;
 const formatDateSeconds = (seconds) => {
-  const date = new Date(seconds * 1000);
+  const date = new Date(seconds * 1000 || 0);
   const options = {
     year: 'numeric',
     month: 'long', // 'long' displays the full month name

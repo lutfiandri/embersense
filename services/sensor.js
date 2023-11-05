@@ -1,5 +1,5 @@
 import { db } from './firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 
 export const insertSensor = async (data) => {
   const now = new Date();
@@ -23,6 +23,10 @@ export const updateSensor = async (data) => {
   await setDoc(doc(db, 'sensors', data.sensorId), data, {
     merge: true,
   });
+};
+
+export const deleteSensor = async (sensorId) => {
+  await deleteDoc(doc(db, 'sensors', sensorId));
 };
 
 export const getSensor = async (id) => {
