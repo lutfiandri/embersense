@@ -2,8 +2,15 @@ import Head from 'next/head';
 import Footer from '../feature/Footer';
 import Header from '../feature/Header';
 import Sidebar from '../feature/sidebar/Sidebar';
+import clsx from 'clsx';
 
-function DefaultLayout({ children, title = 'Embersense' }) {
+function DefaultLayout({
+  children,
+  title = 'Embersense',
+  header = true,
+  footer = true,
+  className,
+}) {
   return (
     <>
       <Head>
@@ -12,9 +19,11 @@ function DefaultLayout({ children, title = 'Embersense' }) {
       <div className="flex w-full min-h-[100vh]">
         <Sidebar></Sidebar>
         <div className="flex flex-col w-full">
-          <Header></Header>
-          <main className="flex-1 p-4 relative">{children}</main>
-          <Footer />
+          {header ? <Header></Header> : <></>}
+          <main className={clsx('flex-1 p-4 relative', className)}>
+            {children}
+          </main>
+          {footer ? <Footer></Footer> : <></>}
         </div>
       </div>
     </>

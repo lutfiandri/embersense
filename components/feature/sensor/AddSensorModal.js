@@ -1,15 +1,26 @@
-import { upsertSensor } from '@/services/sensor';
+import { insertSensor } from '@/services/sensor';
 import { Button, Form, Input, InputNumber, Modal, notification } from 'antd';
+import { useEffect } from 'react';
 
-export default function AddSensorModal({ isOpen, onCancel, form }) {
-  const [api, contextHolder] = notification.useNotification();
+export default function AddSensorModal({
+  isOpen,
+  onCancel,
+  form,
+  lat,
+  long,
+  notificationApi,
+}) {
+  useEffect(() => {
+    form.setFieldValue('latitude', lat);
+    form.setFieldValue('longitude', long);
+  }, [form, lat, long]);
 
   const submitHandler = async () => {
     try {
       const data = form.getFieldsValue();
       console.log(data);
-      await upsertSensor(data);
-      api.success({
+      await insertSensor(data);
+      notificationApi.success({
         message: 'Berhasil',
         description: `Sensor ${data.sensorName} berhasil ditambahkan`,
       });
@@ -22,27 +33,30 @@ export default function AddSensorModal({ isOpen, onCancel, form }) {
       onCancel();
     } catch (error) {
       console.error(error);
-      api.error({
+      notificationApi.error({
         message: 'Gagal menambahakan sensor',
+        description: error.message,
       });
     }
   };
 
   return (
     <Modal
-      title="Mo"
+      title="Tambah Sensor"
       open={isOpen}
       onCancel={onCancel}
       cancelText="Batalkan"
       maskClosable={false}
       footer={null}
     >
-      {contextHolder}
       <Form form={form} layout="vertical" autoComplete="off">
         <Form.Item
           name="sensorId"
           label="ID sensor"
-          rules={[{ required: true }]}
+          rules={[
+            { required: true, message: 'ID sensor harus diisi' },
+            { len: 8, message: 'ID sensor harus 8 karakter' },
+          ]}
         >
           <Input placeholder="Masukkan ID sensor" />
         </Form.Item>
@@ -50,7 +64,7 @@ export default function AddSensorModal({ isOpen, onCancel, form }) {
         <Form.Item
           name="sensorName"
           label="Nama sensor"
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Nama sensor harus diisi' }]}
         >
           <Input placeholder="Masukkan nama sensor" />
         </Form.Item>
@@ -58,17 +72,25 @@ export default function AddSensorModal({ isOpen, onCancel, form }) {
         <Form.Item
           name="latitude"
           label="Latitude"
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Latitude harus diisi' }]}
         >
-          <InputNumber placeholder="Masukkan latitude" className="w-full" />
+          <InputNumber
+            placeholder="Masukkan latitude"
+            className="w-full"
+            // defaultValue={lat}
+          />
         </Form.Item>
 
         <Form.Item
           name="longitude"
           label="Longitude"
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Longitude harus diisi' }]}
         >
-          <InputNumber placeholder="Masukkan longitude" className="w-full" />
+          <InputNumber
+            placeholder="Masukkan longitude"
+            className="w-full"
+            // defaultValue={long}
+          />
         </Form.Item>
 
         <Form.Item>
