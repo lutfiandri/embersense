@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import MenuItem from './MenuItem';
 import {
   TbDeviceCameraPhone,
@@ -28,13 +29,22 @@ const MENUS = [
 function Sidebar() {
   return (
     <div>
-      <div className="w-[200px]"></div>
-      <div className="w-[200px] h-[100vh] fixed bg-slate-700 text-white">
-        <div className="flex flex-col p-4 gap-1">
-          <div>embersense</div>
-          {MENUS.map((menu) => (
-            <MenuItem key={menu.title} menu={menu} />
-          ))}
+      <div className="w-[220px]"></div>
+      <div className="w-[220px] h-[100vh] fixed bg-[#CA3433] text-white">
+        <div className="flex flex-col px-4 py-8 gap-1">
+          <div className="flex flex-col items-center justify-center gap-2">
+            <img
+              src="/embersense.svg"
+              alt="Embersense Logo"
+              className="w-20 h-20"
+            />
+            <div className="font-semibold">Embersense</div>
+          </div>
+          <div className="flex flex-col py-4 gap-1">
+            {MENUS.map((menu) => (
+              <MenuItem key={menu.title} menu={menu} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
