@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useRouter } from 'next/router';
 import MenuItem from './MenuItem';
 import {
   TbDeviceCameraPhone,
@@ -27,6 +28,8 @@ const MENUS = [
 ];
 
 function Sidebar() {
+  const router = useRouter();
+  console.log(router.pathname);
   return (
     <div>
       <div className="w-[220px]"></div>
@@ -42,7 +45,11 @@ function Sidebar() {
           </div>
           <div className="flex flex-col py-4 gap-1">
             {MENUS.map((menu) => (
-              <MenuItem key={menu.title} menu={menu} />
+              <MenuItem
+                key={menu.title}
+                menu={menu}
+                pathname={router.pathname}
+              />
             ))}
           </div>
         </div>
