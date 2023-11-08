@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import DefaultLayout from '@/components/layout/DefaultLayout';
-import { Logo } from '@/public';
 import {
   MdEnergySavingsLeaf,
   MdNewReleases,
