@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import MenuItem from './MenuItem';
 import {
   TbDeviceCameraPhone,
+  TbFlagStar,
   TbHistory,
   TbHome,
   TbLayoutDashboard,
@@ -19,6 +20,11 @@ const MENUS = [
     path: '/dashboard',
     title: 'Dashboard',
     icon: <TbLayoutDashboard className="w-8 h-8" />,
+  },
+  {
+    path: '/recommendation',
+    title: 'Rekomendasi Peletakan',
+    icon: <TbFlagStar className="w-8 h-8" />,
   },
   {
     path: '/about',
