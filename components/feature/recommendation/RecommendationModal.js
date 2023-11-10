@@ -42,6 +42,10 @@ export default function RecommendationModal({
         console.log(result.data);
         setRecommendationResult(result?.data);
       } else {
+        // do conversion from meter to degree (latlng)
+        const degToMeter = 110_000; // (1deg = 110km)
+        const distanceDegree = data.node_length / degToMeter;
+        data.node_length = distanceDegree;
         const result = await axios.post(
           BE_PY_BASEURL + '/recommend-by-distance',
           data
