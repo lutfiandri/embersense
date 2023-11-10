@@ -115,38 +115,31 @@ export default function RecommendationMap() {
         </>
       ) : null}
 
-      {/* {isWantToCreate ? (
+      {step === 2 ? (
         <>
           <Button
             type="primary"
-            danger
             className="absolute bottom-8 right-8 z-[1000]"
-            onClick={() => setIsWantToCreate(false)}
+            onClick={() => {
+              setPolygonNodes([]);
+              setRecommendationResult({});
+              setStep(0);
+            }}
           >
-            Batal Tambah Sensor
+            Ulang Rekomendasi
           </Button>
-          <div className="bg-white px-4 py-2 z-[1000] absolute top-4 left-1/2 -translate-x-1/2 shadow-md font-mono text-center">
-            Mode penambahan sensor.
-            <br />
-            Tekan di peta untuk menambahkan sensor di lokasi tersebut.
-          </div>
         </>
-      ) : (
-        <Button
-          type="primary"
-          className="absolute bottom-8 right-8 z-[1000]"
-          onClick={() => setIsWantToCreate(true)}
-        >
-          Tambah Sensor
-        </Button>
-      )}
-      /> */}
+      ) : null}
     </div>
   );
 }
 
 function MapEvent({ setCursorLat, setCursorLong, step, setPolygonNodes }) {
   useMapEvents({
+    mousemove: (e) => {
+      setCursorLat(e?.latlng?.lat);
+      setCursorLong(e?.latlng?.lng);
+    },
     click: (e) => {
       if (step === 0) {
         // input polygon
