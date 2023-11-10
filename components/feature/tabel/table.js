@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { TiArrowSortedDown } from "react-icons/ti";
-import DataTableExtensions from "react-data-table-component-extensions";
-import "react-data-table-component-extensions/dist/index.css";
-import { collection, getDocs, deleteDoc, updateDoc } from "firebase/firestore"; // Import Firestore functions
-import { FaTrash } from "react-icons/fa";
-import { Modal, Button } from "antd"; // Import Modal and Button from Ant Design
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { TiArrowSortedDown } from 'react-icons/ti';
+import DataTableExtensions from 'react-data-table-component-extensions';
+import 'react-data-table-component-extensions/dist/index.css';
+import { collection, getDocs, deleteDoc, updateDoc } from 'firebase/firestore'; // Import Firestore functions
+import { FaTrash } from 'react-icons/fa';
+import { Modal, Button } from 'antd'; // Import Modal and Button from Ant Design
 
-import { db } from "@/services/firebase";
+import { db } from '@/services/firebase';
 
 const formatDateSeconds = (seconds) => {
-  const date = new Date(seconds * 1000 || 0);
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  };
+  try {
+    const date = new Date(seconds * 1000 || 0);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
 
-  const formatter = new Intl.DateTimeFormat("id-ID", options);
-  const formattedDate = formatter.format(date);
-  return formattedDate;
+    const formatter = new Intl.DateTimeFormat('id-ID', options);
+    const formattedDate = formatter.format(date);
+    return formattedDate;
+  } catch {
+    return '';
+  }
 };
 
 const Table = () => {
@@ -37,7 +41,7 @@ const Table = () => {
     // Fetch data from Firebase
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "sensors"));
+        const querySnapshot = await getDocs(collection(db, 'sensors'));
         const data = [];
 
         querySnapshot.forEach((doc) => {
@@ -46,48 +50,48 @@ const Table = () => {
 
         const columns = [
           {
-            name: "ID sensor",
-            selector: "sensorId",
+            name: 'ID sensor',
+            selector: 'sensorId',
             sortable: true,
           },
           {
-            name: "Nama sensor",
-            selector: "sensorName",
+            name: 'Nama sensor',
+            selector: 'sensorName',
             sortable: true,
           },
           {
-            name: "Latitude",
-            selector: "latitude",
+            name: 'Latitude',
+            selector: 'latitude',
             sortable: true,
           },
           {
-            name: "Longitude",
-            selector: "longitude",
+            name: 'Longitude',
+            selector: 'longitude',
             sortable: true,
           },
           {
-            name: "Waktu Created",
-            selector: "createdAt.seconds",
+            name: 'Waktu Created',
+            selector: 'createdAt.seconds',
             sortable: true,
-            format: (row) => formatDateSeconds(row.createdAt.seconds),
+            format: (row) => formatDateSeconds(row?.createdAt?.seconds),
           },
           {
-            name: "Waktu Mati",
-            selector: "updatedAt.seconds",
+            name: 'Waktu Mati',
+            selector: 'updatedAt.seconds',
             sortable: true,
             format: (row) => {
-              const createdAt = row.createdAt.seconds;
-              const updatedAt = row.updatedAt.seconds;
+              const createdAt = row?.createdAt?.seconds;
+              const updatedAt = row?.updatedAt?.seconds;
 
               if (updatedAt !== createdAt) {
                 return formatDateSeconds(updatedAt); // Tampilkan waktu mati sesuai waktu update
               } else {
-                return "Sensor Masih Hidup";
+                return 'Sensor Masih Hidup';
               }
             },
           },
           {
-            name: "Action",
+            name: 'Action',
             sortable: false,
             cell: (row) => (
               <FaTrash
@@ -106,7 +110,7 @@ const Table = () => {
 
         setTableData({ columns, data });
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -115,14 +119,14 @@ const Table = () => {
 
   const handleDelete = async () => {
     if (sensorToDelete) {
-      const sensorRef = collection(db, "sensors").doc(sensorToDelete.id);
+      const sensorRef = collection(db, 'sensors').doc(sensorToDelete.id);
 
       try {
         await deleteDoc(sensorRef);
-        console.log("Sensor berhasil dihapus");
+        console.log('Sensor berhasil dihapus');
         // Setelah menghapus sensor, Anda dapat memuat ulang data atau memperbarui state data lokal Anda.
       } catch (error) {
-        console.error("Error menghapus sensor:", error);
+        console.error('Error menghapus sensor:', error);
       }
 
       setSensorToDelete(null); // Reset sensorToDelete setelah penghapusan
