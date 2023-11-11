@@ -1,7 +1,7 @@
-import DefaultLayout from "@/components/layout/DefaultLayout";
-import dynamic from "next/dynamic";
+import DefaultLayout from '@/components/layout/DefaultLayout';
+import dynamic from 'next/dynamic';
 
-const Table = dynamic(() => import("@/components/feature/tabel/table"), {
+const Table = dynamic(() => import('@/components/feature/tabel/table'), {
   ssr: false,
 });
 

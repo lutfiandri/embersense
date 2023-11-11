@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { TiArrowSortedDown } from "react-icons/ti";
-import DataTableExtensions from "react-data-table-component-extensions";
-import "react-data-table-component-extensions/dist/index.css";
-import { collection, onSnapshot, deleteDoc } from "firebase/firestore"; // Import Firestore functions
-import { FaTrash } from "react-icons/fa";
-import { Modal, notification } from "antd"; // Import Modal and notification from Ant Design
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { TiArrowSortedDown } from 'react-icons/ti';
+import DataTableExtensions from 'react-data-table-component-extensions';
+import 'react-data-table-component-extensions/dist/index.css';
+import { collection, getDocs, deleteDoc, updateDoc } from 'firebase/firestore'; // Import Firestore functions
+import { FaTrash } from 'react-icons/fa';
+import { Modal, Button } from 'antd'; // Import Modal and Button from Ant Design
 
-import { db } from "@/services/firebase";
-import { deleteSensor } from "@/services/sensor";
+import { db } from '@/services/firebase';
 
 const formatDateSeconds = (seconds) => {
   try {
@@ -34,17 +33,15 @@ const Table = () => {
     columns: [],
     data: [],
   });
-  const [notificationApi, notificationContextHolder] =
-    notification.useNotification();
 
   const [sensorToDelete, setSensorToDelete] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   useEffect(() => {
     // Fetch data from Firebase
-    const unsubscribe = onSnapshot(
-      collection(db, "sensors"),
-      (querySnapshot) => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'sensors'));
         const data = [];
 
         querySnapshot.forEach((doc) => {
@@ -87,7 +84,7 @@ const Table = () => {
               const updatedAt = row?.updatedAt?.seconds;
 
               if (updatedAt !== createdAt) {
-                return formatDateSeconds(updatedAt);
+                return formatDateSeconds(updatedAt); // Tampilkan waktu mati sesuai waktu update
               } else {
                 return 'Sensor Masih Hidup';
               }
@@ -101,8 +98,8 @@ const Table = () => {
                 type="primary"
                 danger
                 onClick={() => {
-                  setSensorToDelete(row);
-                  setShowDeleteConfirmation(true);
+                  setSensorToDelete(row); // Menandai sensor yang akan dihapus
+                  setShowDeleteConfirmation(true); // Tampilkan modal konfirmasi
                 }}
               >
                 Hapus Sensor
@@ -112,35 +109,33 @@ const Table = () => {
         ];
 
         setTableData({ columns, data });
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-    );
-
-    return () => {
-      // Unsubscribe from the snapshot listener when the component unmounts
-      unsubscribe();
     };
+
+    fetchData();
   }, []);
 
   const handleDelete = async () => {
     if (sensorToDelete) {
+      const sensorRef = collection(db, 'sensors').doc(sensorToDelete.id);
+
       try {
-        await deleteSensor(sensorToDelete.sensorId);
-        notificationApi.success({
-          message: "Berhasil",
-          description: `Sensor ${sensorToDelete.sensorName} berhasil ditambahkan`,
-        });
+        await deleteDoc(sensorRef);
+        console.log('Sensor berhasil dihapus');
+        // Setelah menghapus sensor, Anda dapat memuat ulang data atau memperbarui state data lokal Anda.
       } catch (error) {
         console.error('Error menghapus sensor:', error);
       }
 
-      setSensorToDelete(null);
-      setShowDeleteConfirmation(false);
+      setSensorToDelete(null); // Reset sensorToDelete setelah penghapusan
+      setShowDeleteConfirmation(false); // Tutup modal konfirmasi
     }
   };
 
   return (
     <div className="py-10 text-center shadow-xl">
-      {notificationContextHolder}
       <DataTableExtensions {...tableData} print={false}>
         <DataTable
           columns={tableData.columns}
