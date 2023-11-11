@@ -20,7 +20,7 @@ function DefaultLayout({
         <Sidebar></Sidebar>
         <div className="flex flex-col w-full">
           {header ? <Header></Header> : <></>}
-          <main className={clsx('flex-1 p-4 relative', className)}>
+          <main className={clsx('flex-1 relative', className)}>
             {children}
           </main>
           {footer ? <Footer></Footer> : <></>}
