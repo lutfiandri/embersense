@@ -63,8 +63,8 @@ export default function Map() {
         return 'green';
       }
       const nowSeconds = now.getTime() / 1000;
-      const updatedAtSeconds = sensor.updatedAt.seconds;
-      if (nowSeconds - updatedAtSeconds < 60) {
+      const lastPacketAt = sensor?.lastPacketAt?.seconds;
+      if (nowSeconds - lastPacketAt < 60) {
         // sedang aktif, sampai 60 detik
         return 'yellow';
       }
@@ -133,7 +133,7 @@ export default function Map() {
             className="absolute bottom-8 right-8 z-[1000]"
             onClick={() => setIsWantToCreate(false)}
           >
-            Batal Tambah Sensor
+            Selesai Tambah Sensor
           </Button>
           <div className="bg-white px-4 py-2 z-[1000] absolute top-4 left-1/2 -translate-x-1/2 shadow-md font-mono text-center">
             Mode penambahan sensor.
@@ -239,7 +239,7 @@ function MapEvent({
   });
   return <></>;
 }
-6;
+
 const formatDateSeconds = (seconds) => {
   const date = new Date(seconds * 1000 || 0);
   const options = {
