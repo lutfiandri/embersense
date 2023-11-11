@@ -1,6 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
+import { useRouter } from 'next/router';
 import MenuItem from './MenuItem';
 import {
   TbDeviceCameraPhone,
+  TbFlagStar,
   TbHistory,
   TbHome,
   TbLayoutDashboard,
@@ -19,6 +22,11 @@ const MENUS = [
     icon: <TbLayoutDashboard className="w-8 h-8" />,
   },
   {
+    path: '/recommendation',
+    title: 'Rekomendasi Peletakan',
+    icon: <TbFlagStar className="w-8 h-8" />,
+  },
+  {
     path: '/about',
     title: 'Tentang Kami',
     icon: <TbUserQuestion className="w-8 h-8" />,
@@ -26,15 +34,30 @@ const MENUS = [
 ];
 
 function Sidebar() {
+  const router = useRouter();
+  console.log(router.pathname);
   return (
     <div>
-      <div className="w-[200px]"></div>
-      <div className="w-[200px] h-[100vh] fixed bg-slate-700 text-white">
-        <div className="flex flex-col p-4 gap-1">
-          <div>embersense</div>
-          {MENUS.map((menu) => (
-            <MenuItem key={menu.title} menu={menu} />
-          ))}
+      <div className="w-[220px]"></div>
+      <div className="w-[220px] h-[100vh] fixed bg-[#CA3433] text-white">
+        <div className="flex flex-col px-4 py-8">
+          <div className="flex flex-col items-center justify-center gap-1">
+            <img
+              src="/embersense.svg"
+              alt="Embersense Logo"
+              className="w-24 h-24"
+            />
+            <div className="font-semibold">Embersense</div>
+          </div>
+          <div className="flex flex-col py-4 gap-1">
+            {MENUS.map((menu) => (
+              <MenuItem
+                key={menu.title}
+                menu={menu}
+                pathname={router.pathname}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

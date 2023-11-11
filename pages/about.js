@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import DefaultLayout from '@/components/layout/DefaultLayout';
-import { Logo } from '@/public';
 import {
   MdEnergySavingsLeaf,
   MdNewReleases,
@@ -12,7 +11,7 @@ export default function About() {
   return (
     <DefaultLayout title="Embersense">
       <div>
-        <div className="min-h-[100vh] w-full bg-black">
+        <div className="min-h-[100vh] w-full bg-cover bg-center bg-fixed">
           <img
             className="object-cover object-center h-[100vh] w-full"
             src={
@@ -35,37 +34,73 @@ export default function About() {
               secara kontinu dan mengidentifikasi perubahan suhu sebagai
               indikasi awal terjadinya kebakaran hutan.
             </div>
-            <div className="grid justify-items-center md:w-1/3">
-              {/* <img class="w-30" src={Logo} alt=''/> */}
-              <MdEnergySavingsLeaf className="w-20 h-20" />
+            <div className="grid justify-items-center md:w-1/4">
+                <img
+                src="/embersense.svg"
+                alt="Embersense Logo"
+                className="w-32 h-32"
+                />
             </div>
           </div>
-          <div className="mx-5 p-8 w-full text-center font-semibold  grid md:flex justify-around bg-slate-300">
+          <div className="mx-5 p-8 w-full text-center font-semibold  grid md:flex justify-around bg-[#F4EACB]">
             <div className="py-3 grid justify-items-center">
-              <div className="pb-3">
-                <MdNewReleases className="w-10 h-10" />
-              </div>
+                <img
+                    src="/deteksi.png"
+                    alt="Early Detection Icon"
+                    className="w-32 h-32"
+                    />
               PENDETEKSI DINI
             </div>
             <div className="py-3 grid justify-items-center">
               <div className="pb-3">
-                <MdPaid className="w-10 h-10" />
+                <img
+                    src="/hemat.png"
+                    alt="Cost Effective Icon"
+                    className="w-32 h-32"
+                    />
               </div>
               MURAH
             </div>
             <div className="py-3 grid justify-items-center">
               <div className="pb-3">
-                <MdEnergySavingsLeaf className="w-10 h-10" />
+                <img
+                    src="/energi.png"
+                    alt="Energy Saving Icon"
+                    className="w-32 h-32"
+                    />
               </div>
               HEMAT ENERGI
             </div>
             <div className="py-3 grid justify-items-center">
               <div className="pb-3">
-                <MdMoreTime className="w-10 h-10" />
+                <img
+                    src="/baterai.png"
+                    alt="Long Lasting Battery Icon"
+                    className="w-32 h-32"
+                    />
               </div>
               BERTAHAN 3 TAHUN
             </div>
           </div>
+        </div>
+        <div className='p-10 grid content-center w-full bg-[#e0cbae]'>
+            <div className='text-center font-black text-xl'>OUR TEAM</div>
+            <div className='p-5 md:flex grid place-content-center md:justify-between'>
+                <div className='grid justify-items-center md:w-1/2'>
+                    <img
+                    src="/c12.png"
+                    alt="Our Team"
+                    className="object-scale-down h-48 "
+                    />
+                </div>
+                <div className='md:w-1/2 py-5 text-center'>
+                    Arya Dwi Pramudya | Teknik Elektro
+                    <br/>Kurnia Dwi Utami | Teknologi Informasi
+                    <br/>Lutfi Andriyanto | Teknologi Informasi
+                    <br/>Siti Malatania | Teknologi Informasi
+                    <br/>Yanayir Rifai | Teknik Biomedis
+                </div>
+            </div>
         </div>
       </div>
     </DefaultLayout>

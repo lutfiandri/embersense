@@ -11,18 +11,22 @@ import { db } from "@/services/firebase";
 import { deleteSensor } from "@/services/sensor";
 
 const formatDateSeconds = (seconds) => {
-  const date = new Date(seconds * 1000 || 0);
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  };
+  try {
+    const date = new Date(seconds * 1000 || 0);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
 
-  const formatter = new Intl.DateTimeFormat("id-ID", options);
-  const formattedDate = formatter.format(date);
-  return formattedDate;
+    const formatter = new Intl.DateTimeFormat('id-ID', options);
+    const formattedDate = formatter.format(date);
+    return formattedDate;
+  } catch {
+    return '';
+  }
 };
 
 const Table = () => {
@@ -49,48 +53,48 @@ const Table = () => {
 
         const columns = [
           {
-            name: "ID sensor",
-            selector: "sensorId",
+            name: 'ID sensor',
+            selector: 'sensorId',
             sortable: true,
           },
           {
-            name: "Nama sensor",
-            selector: "sensorName",
+            name: 'Nama sensor',
+            selector: 'sensorName',
             sortable: true,
           },
           {
-            name: "Latitude",
-            selector: "latitude",
+            name: 'Latitude',
+            selector: 'latitude',
             sortable: true,
           },
           {
-            name: "Longitude",
-            selector: "longitude",
+            name: 'Longitude',
+            selector: 'longitude',
             sortable: true,
           },
           {
-            name: "Waktu Created",
-            selector: "createdAt.seconds",
+            name: 'Waktu Created',
+            selector: 'createdAt.seconds',
             sortable: true,
-            format: (row) => formatDateSeconds(row.createdAt.seconds),
+            format: (row) => formatDateSeconds(row?.createdAt?.seconds),
           },
           {
-            name: "Waktu Mati",
-            selector: "updatedAt.seconds",
+            name: 'Waktu Mati',
+            selector: 'updatedAt.seconds',
             sortable: true,
             format: (row) => {
-              const createdAt = row.createdAt.seconds;
-              const updatedAt = row.updatedAt.seconds;
+              const createdAt = row?.createdAt?.seconds;
+              const updatedAt = row?.updatedAt?.seconds;
 
               if (updatedAt !== createdAt) {
                 return formatDateSeconds(updatedAt);
               } else {
-                return "Sensor Masih Hidup";
+                return 'Sensor Masih Hidup';
               }
             },
           },
           {
-            name: "Action",
+            name: 'Action',
             sortable: false,
             cell: (row) => (
               <FaTrash
@@ -126,7 +130,7 @@ const Table = () => {
           description: `Sensor ${sensorToDelete.sensorName} berhasil ditambahkan`,
         });
       } catch (error) {
-        console.error("Error menghapus sensor:", error);
+        console.error('Error menghapus sensor:', error);
       }
 
       setSensorToDelete(null);
