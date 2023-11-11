@@ -3,7 +3,7 @@ import DataTable from "react-data-table-component";
 import { TiArrowSortedDown } from "react-icons/ti";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
-import { collection, onSnapshot, deleteDoc } from "firebase/firestore"; // Import Firestore functions
+import { collection, onSnapshot } from "firebase/firestore"; // Import Firestore functions
 import { FaTrash } from "react-icons/fa";
 import { Modal, notification } from "antd"; // Import Modal and notification from Ant Design
 
