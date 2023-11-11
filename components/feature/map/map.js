@@ -4,15 +4,15 @@ import {
   Popup,
   TileLayer,
   useMapEvents,
-} from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import { Button, Drawer, Form, Popconfirm, notification } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
-import { collection, doc, onSnapshot, query } from 'firebase/firestore';
-import { db } from '@/services/firebase';
-import AddSensorModal from '../sensor/AddSensorModal';
-import { TbAdjustmentsDollar } from 'react-icons/tb';
-import { deleteSensor } from '@/services/sensor';
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { Button, Drawer, Form, Popconfirm, notification } from "antd";
+import { useCallback, useEffect, useState } from "react";
+import { collection, doc, onSnapshot, query } from "firebase/firestore";
+import { db } from "@/services/firebase";
+import AddSensorModal from "../sensor/AddSensorModal";
+import { TbAdjustmentsDollar } from "react-icons/tb";
+import { deleteSensor } from "@/services/sensor";
 
 export default function Map() {
   const [notificationApi, notificationContextHolder] =
@@ -40,7 +40,7 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    const q = query(collection(db, 'sensors'));
+    const q = query(collection(db, "sensors"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const sensors = [];
       querySnapshot.forEach((doc) => {
@@ -60,17 +60,17 @@ export default function Map() {
     (sensor) => {
       if (!sensor.lastPacketCount) {
         // belum pernah aktif
-        return 'green';
+        return "green";
       }
       const nowSeconds = now.getTime() / 1000;
       const updatedAtSeconds = sensor.updatedAt.seconds;
       if (nowSeconds - updatedAtSeconds < 60) {
         // sedang aktif, sampai 60 detik
-        return 'yellow';
+        return "yellow";
       }
 
       // udah pernah aktif, udah mati juga
-      return 'blue';
+      return "blue";
     },
     [now]
   );
@@ -179,7 +179,7 @@ export default function Map() {
             <div className="flex flex-col">
               <div className="text-sm text-gray-600">Lokasi</div>
               <div>
-                {selectedSensor?.latitude?.toFixed(10)},{' '}
+                {selectedSensor?.latitude?.toFixed(10)},{" "}
                 {selectedSensor?.longitude?.toFixed(10)}
               </div>
             </div>
@@ -198,12 +198,12 @@ export default function Map() {
               try {
                 await deleteSensor(selectedSensor?.sensorId);
                 notificationApi.success({
-                  message: 'Berhasil',
+                  message: "Berhasil",
                   description: `Sensor ${selectedSensor?.sensorName} berhasil dihapus`,
                 });
               } catch (error) {
                 notificationApi.error({
-                  message: 'Gagal menghapus sensor',
+                  message: "Gagal menghapus sensor",
                   description: error.message,
                 });
               }
@@ -243,14 +243,14 @@ function MapEvent({
 const formatDateSeconds = (seconds) => {
   const date = new Date(seconds * 1000 || 0);
   const options = {
-    year: 'numeric',
-    month: 'long', // 'long' displays the full month name
-    day: 'numeric',
-    hour: '2-digit', // Display the hour in 2-digit format (e.g., 09)
-    minute: '2-digit', // Display the minute in 2-digit format (e.g., 05)
+    year: "numeric",
+    month: "long", // 'long' displays the full month name
+    day: "numeric",
+    hour: "2-digit", // Display the hour in 2-digit format (e.g., 09)
+    minute: "2-digit", // Display the minute in 2-digit format (e.g., 05)
   };
 
-  const formatter = new Intl.DateTimeFormat('id-ID', options);
+  const formatter = new Intl.DateTimeFormat("id-ID", options);
   const formattedDate = formatter.format(date);
   return formattedDate;
 };
