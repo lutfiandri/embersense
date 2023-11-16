@@ -9,13 +9,14 @@ import {
 
 export default function About() {
   return (
-    <DefaultLayout title="Embersense">
+    <DefaultLayout title="Embersense" className='!p-0'>
       <div>
         <div className="min-h-[100vh] w-full bg-cover bg-center bg-fixed">
           <img
-            className="object-cover object-center h-[100vh] w-full"
+            className="object-cover object-center h-[100vh] w-full bg-[#252422]"
             src={
-              'https://images.pexels.com/photos/6352761/pexels-photo-6352761.jpeg'
+              // 'https://images.pexels.com/photos/6352761/pexels-photo-6352761.jpeg'
+              '/hardware.png'
             }
             alt="bgImg"
           />
@@ -42,7 +43,7 @@ export default function About() {
                 />
             </div>
           </div>
-          <div className="mx-5 p-8 w-full text-center font-semibold  grid md:flex justify-around bg-[#F4EACB]">
+          <div className=" p-8 w-full text-center font-semibold  grid md:flex justify-around bg-[#F4EACB]">
             <div className="py-3 grid justify-items-center">
                 <img
                     src="/deteksi.png"
@@ -85,20 +86,48 @@ export default function About() {
         </div>
         <div className='p-10 grid content-center w-full bg-[#e0cbae]'>
             <div className='text-center font-black text-xl'>OUR TEAM</div>
-            <div className='p-5 md:flex grid place-content-center md:justify-between'>
-                <div className='grid justify-items-center md:w-1/2'>
+            <div className='pt-10 md:grid-cols-3 grid md:justify-center text-center place-content-center'>
+                <div className='grid justify-items-center py-5'>
                     <img
-                    src="/c12.png"
-                    alt="Our Team"
-                    className="object-scale-down h-48 "
+                      src="/arya.png"
+                      alt="Arya Dwi Pramudya"
+                      className="object-scale-down h-48 rounded-lg"
                     />
+                    Arya Dwi Pramudya <br/> Teknik Elektro
                 </div>
-                <div className='md:w-1/2 py-5 text-center'>
-                    Arya Dwi Pramudya | Teknik Elektro
-                    <br/>Kurnia Dwi Utami | Teknologi Informasi
-                    <br/>Lutfi Andriyanto | Teknologi Informasi
-                    <br/>Siti Malatania | Teknologi Informasi
-                    <br/>Yanayir Rifai | Teknik Biomedis
+                <div className='grid justify-items-center py-5'>
+                    <img
+                      src="/lutfi.png"
+                      alt="Lutfi Andriyanto"
+                      className="object-scale-down h-48 rounded-lg"
+                    />
+                    Lutfi Andriyanto <br/> Teknologi Informasi
+                </div>
+                <div className='grid justify-items-center py-5'>
+                    <img
+                      src="/yana.png"
+                      alt="Yanayir Rifai"
+                      className="object-scale-down h-48 rounded-lg"
+                    />
+                    Yanayir Rifai <br/> Teknik Biomedis
+                </div>
+            </div>
+            <div className='md:flex grid md:space-x-36 text-center place-content-center'>
+                <div className='grid justify-items-center py-5'>
+                    <img
+                      src="/kurnia.png"
+                      alt="Kurnia Dwi Utami"
+                      className="object-scale-down h-48 rounded-lg"
+                    />
+                    Kurnia Dwi Utami <br/> Teknologi Informasi
+                </div>
+                <div className='grid justify-items-center py-5 '>
+                    <img
+                      src="/nia.png"
+                      alt="Siti Malatania"
+                      className="object-scale-down h-48 rounded-lg"
+                    />
+                    Siti Malatania <br/> Teknologi Informasi
                 </div>
             </div>
         </div>
