@@ -7,8 +7,8 @@ import clsx from 'clsx';
 function DefaultLayout({
   children,
   title = 'Embersense',
-  header = true,
-  footer = true,
+  header = false,
+  footer = false,
   className,
 }) {
   return (

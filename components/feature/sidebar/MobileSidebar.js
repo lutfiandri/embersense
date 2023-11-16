@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { TbMenu2, TbX } from 'react-icons/tb';
+import MenuItem from './MenuItem';
 
 function MobileSidebar({ menus, pathname }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +35,18 @@ function MobileSidebar({ menus, pathname }) {
       </div>
 
       {/* slide menu */}
-      {/* <div className="fixed w-full h-screen bg-red-400 top-0 left-0"></div> */}
+      <div
+        className={clsx(
+          'fixed w-full h-[calc(100vh-48px)] bg-[#CA3433] top-12 duration-300 text-white',
+          isOpen ? 'left-0' : '-left-[100%]'
+        )}
+      >
+        <div className="flex flex-col py-4 gap-1 m-4">
+          {menus.map((menu) => (
+            <MenuItem key={menu.title} menu={menu} pathname={pathname} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
