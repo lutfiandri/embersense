@@ -7,7 +7,7 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Button, Drawer, Form, Popconfirm, notification } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { collection, doc, onSnapshot, query } from 'firebase/firestore';
 import { db } from '@/services/firebase';
 import AddSensorModal from '../sensor/AddSensorModal';
@@ -75,6 +75,22 @@ export default function Map() {
     [now]
   );
 
+  const sensorMeta = useMemo(() => {
+    const sensorsWithColor = sensors.map((sensor) => ({
+      ...sensor,
+      color: getColor(sensor),
+    }));
+    const nBlue = sensorsWithColor.filter((s) => s.color == 'blue').length;
+    const nYellow = sensorsWithColor.filter((s) => s.color == 'yellow').length;
+    const nGreen = sensorsWithColor.filter((s) => s.color == 'green').length;
+    const meta = {
+      nBlue,
+      nYellow,
+      nGreen,
+    };
+    return meta;
+  }, [sensors, getColor]);
+
   const center = [-7.76535863145401, 110.37231832786686]; // sglc
   return (
     <div className="relative isolate">
@@ -123,6 +139,23 @@ export default function Map() {
 
       <div className="bg-white px-4 py-2 z-[1000] absolute left-0 bottom-0 font-mono">
         {cursorLat.toFixed(10)}, {cursorLong.toFixed(10)}
+      </div>
+
+      <div className="bg-white px-4 py-2 z-[1000] absolute left-0 bottom-12 font-mono">
+        <div className="flex flex-col w-[300px]">
+          <div className="flex gap-3 items-center">
+            <div className="bg-[green] w-4 h-4 rounded-full border border-gray-700"></div>
+            <div>Belum pernah hidup ({sensorMeta?.nGreen})</div>
+          </div>
+          <div className="flex gap-3 items-center">
+            <div className="bg-[yellow] w-4 h-4 rounded-full border border-gray-700"></div>
+            <div>Sedang hidup ({sensorMeta?.nYellow})</div>
+          </div>
+          <div className="flex gap-3 items-center">
+            <div className="bg-[blue] w-4 h-4 rounded-full border border-gray-700"></div>
+            <div>Sudah mati ({sensorMeta?.nBlue})</div>
+          </div>
+        </div>
       </div>
 
       {isWantToCreate ? (
