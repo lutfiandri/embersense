@@ -93,14 +93,14 @@ export default function Map() {
 
   const center = [-7.76535863145401, 110.37231832786686]; // sglc
   return (
-    <div className="relative isolate">
+    <div className="relative isolate text-xs md:text-sm lg:text-base">
       {notificationContextHolder}
 
       <MapContainer
         center={center}
         zoom={13}
         scrollWheelZoom={true}
-        className="bg-red-500 w-full h-screen"
+        className="bg-red-500 w-full h-[calc(100vh-48px)] lg:h-screen"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -142,7 +142,7 @@ export default function Map() {
       </div>
 
       <div className="bg-white px-4 py-2 z-[1000] absolute left-0 bottom-12 font-mono">
-        <div className="flex flex-col w-[300px]">
+        <div className="flex flex-col">
           <div className="flex gap-3 items-center">
             <div className="bg-[green] w-4 h-4 rounded-full border border-gray-700"></div>
             <div>Belum pernah hidup ({sensorMeta?.nGreen})</div>
@@ -168,7 +168,7 @@ export default function Map() {
           >
             Selesai Tambah Sensor
           </Button>
-          <div className="bg-white px-4 py-2 z-[1000] absolute top-4 left-1/2 -translate-x-1/2 shadow-md font-mono text-center">
+          <div className="bg-white px-4 py-2 z-[1000] absolute  top-16 md:top-4 left-1/2 -translate-x-1/2 shadow-md font-mono text-center">
             Mode penambahan sensor.
             <br />
             Tekan di peta untuk menambahkan sensor di lokasi tersebut.
