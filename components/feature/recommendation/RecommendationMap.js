@@ -43,7 +43,7 @@ export default function RecommendationMap() {
         center={center}
         zoom={13}
         scrollWheelZoom={true}
-        className="bg-red-500 w-full h-screen"
+        className="bg-red-500 w-full h-[calc(100vh-48px)] lg:h-screen"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

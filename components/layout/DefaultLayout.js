@@ -16,11 +16,11 @@ function DefaultLayout({
       <Head>
         <title>{title}</title>
       </Head>
-      <div className="flex w-full min-h-[100vh]">
+      <div className="flex w-full min-h-[100vh] lg:flex-row flex-col">
         <Sidebar></Sidebar>
         <div className="flex flex-col w-full">
           {header ? <Header></Header> : <></>}
-          <main className={clsx('flex-1 relative', className)}>
+          <main className={clsx('flex-1 relative p-4', className)}>
             {children}
           </main>
           {footer ? <Footer></Footer> : <></>}
